@@ -19,4 +19,36 @@ export async function run(
     return;
   }
 
+  if (!fs.existsSync(path.resolve(cwd, ".changeset"))) {
+    error("There is no .changeset folder. ");
+    error(
+      "If this is the first time `changesets` have been used in this project, run `yarn changeset init` to get set up."
+    );
+    error(
+      "If you expected there to be changesets, you should check git history for when the folder was removed to ensure you do not lose any configuration."
+    );
+    throw new ExitError(1);
+  }
+
+  if (input.length < 1) {
+    const { empty, open }: CliOptions = flags;
+    await add(cwd, { empty, open });
+  } else if (input[0] !== "pre" && input.length > 1) {
+    error(
+      "Too many arguments passed to changesets - we only accept the command name as an argument"
+    );
+  } else {
+    const { empty, open }: CliOptions = flags;
+
+    switch (input[0]) {
+      case "add": {
+        await add(cwd, { empty, open });
+        return;
+      }
+      default: {
+        error(`Invalid command ${input[0]} was provided`);
+        throw new ExitError(1);
+      }
+    }
+  }
 }
