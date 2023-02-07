@@ -1,15 +1,8 @@
 import chalk from "chalk";
-import outdent from "outdent";
 import { log } from "../../utils/logger";
-import { Release, VersionType } from "@changesets/types";
+import { Changeset, VersionType } from "../../types";
 
-export default function printConfirmationMessage(
-  changeset: {
-    releases: Array<Release>;
-    summary: string;
-  },
-  repoHasMultiplePackages: boolean
-) {
+export default function printConfirmationMessage(changeset: Changeset) {
   function getReleasesOfType(type: VersionType) {
     return changeset.releases
       .filter((release) => release.type === type)
@@ -26,17 +19,4 @@ export default function printConfirmationMessage(
     log(`${chalk.bold.green("minor")}:  ${minorReleases.join(", ")}`);
   if (patchReleases.length > 0)
     log(`${chalk.bold.green("patch")}:  ${patchReleases.join(", ")}`);
-
-  log("");
-
-  if (repoHasMultiplePackages) {
-    const message = outdent`
-      Note: All dependents of these packages that will be incompatible with
-      the new version will be ${chalk.redBright(
-        "patch bumped"
-      )} when this changeset is applied.
-    `;
-
-    log(message + "\n");
-  }
 }

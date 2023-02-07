@@ -31,18 +31,18 @@ export async function run(
   }
 
   if (input.length < 1) {
-    const { empty, open }: CliOptions = flags;
-    await add(cwd, { empty, open });
+    const { open }: CliOptions = flags;
+    await add(cwd, open);
   } else if (input[0] !== "pre" && input.length > 1) {
     error(
       "Too many arguments passed to changesets - we only accept the command name as an argument"
     );
   } else {
-    const { empty, open }: CliOptions = flags;
+    const { open }: CliOptions = flags;
 
     switch (input[0]) {
       case "add": {
-        await add(cwd, { empty, open });
+        await add(cwd, open);
         return;
       }
       default: {

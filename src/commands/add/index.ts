@@ -5,54 +5,35 @@ import { spawn } from "child_process";
 import * as cli from "../../utils/cli-utilities";
 import * as git from "@changesets/git";
 import { info, log, warn } from "../../utils/logger";
-import { getPackages } from "@manypkg/get-packages";
-import writeChangeset from "@changesets/write";
+import packages from "../../packages";
+import writeChangeset from "./writeChangeset";
 
 import createChangeset from "./createChangeset";
 import printConfirmationMessage from "./messages";
 import { ExternalEditor } from "external-editor";
 import { getAddMessage } from "../../commit/index";
 
-export default async function add(
-  cwd: string,
-  { empty, open }: { empty?: boolean; open?: boolean }
-) {
-  const packages = await getPackages(cwd);
-  if (packages.packages.length === 0) {
-    throw new Error(
-      `No packages found. You might have ${packages.tool} workspaces configured but no packages yet?`
-    );
-  }
-  const listablePackages = packages.packages;
+export default async function add(cwd: string, open?: boolean) {
   const changesetBase = path.resolve(cwd, ".changeset");
 
-  let newChangeset: Awaited<ReturnType<typeof createChangeset>>;
-  if (empty) {
-    newChangeset = {
-      confirmed: true,
-      releases: [],
-      summary: ``,
-    };
-  } else {
-    newChangeset = await createChangeset([], listablePackages);
-    printConfirmationMessage(newChangeset, listablePackages.length > 1);
+  const newChangeset = await createChangeset(packages);
+  printConfirmationMessage(newChangeset);
 
-    if (!newChangeset.confirmed) {
-      newChangeset = {
-        ...newChangeset,
-        confirmed: await cli.askConfirm("Is this your desired changeset?"),
-      };
-    }
-  }
+  const isChangesetConfirmed = await cli.askConfirm(
+    "Is this your desired changeset?"
+  );
 
-  if (newChangeset.confirmed) {
+  if (isChangesetConfirmed) {
     const changesetID = await writeChangeset(newChangeset, cwd);
 
     await git.add(path.resolve(changesetBase, `${changesetID}.md`), cwd);
-    await git.commit(await getAddMessage(newChangeset, {}), cwd);
-    log(chalk.green(`${empty ? "Empty " : ""}Changeset added and committed`));
 
-    let hasMajorChange = [...newChangeset.releases].find(
+    const commitMessage = await getAddMessage(newChangeset);
+    await git.commit(commitMessage, cwd);
+
+    log(chalk.green(`Changeset added and committed`));
+
+    const hasMajorChange = [...newChangeset.releases].find(
       (c) => c.type === "major"
     );
 
