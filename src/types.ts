@@ -32,6 +32,20 @@ export declare type NewChangeset = Changeset & {
   id: string;
 };
 
+export declare interface ChangesetWithCommit extends Changeset {
+  commit: string;
+}
+export const isChangesetWithCommit = (
+  changeset: Changeset | ChangesetWithCommit
+): changeset is ChangesetWithCommit => {
+  return (changeset as ChangesetWithCommit).commit !== undefined;
+};
+
+export type ChangelogSection = {
+  package: string;
+  subsections: { type: VersionType; changelogEntry: string }[];
+};
+
 export type ComprehensiveRelease = {
   name: string;
   type: VersionType;

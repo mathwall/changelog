@@ -1,0 +1,5 @@
+{
+  "baseBranch": "main",
+  "changelogPath": "./CHANGELOG.md",
+  "repo": "mathwall/changelog"
+}
