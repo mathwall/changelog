@@ -1,8 +1,8 @@
-import { Changeset, ReleasePlan } from "@changesets/types";
+import { Changeset, ReleasePlan } from "../types";
 import outdent from "outdent";
 
 export const getAddMessage = (changeset: Changeset): string => {
-  return outdent`docs(changeset): ${changeset.summary}`;
+  return outdent`docs(changeset): ${changeset.summary.detail}`;
 };
 
 export const getVersionMessage = (releasePlan: ReleasePlan): string => {

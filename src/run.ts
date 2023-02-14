@@ -5,7 +5,7 @@ import { ExitError } from "@changesets/errors";
 
 import init from "./commands/init";
 import add from "./commands/add";
-// import version from "./commands/version";
+import version from "./commands/version";
 import { CliOptions } from "./types";
 
 export async function run(
@@ -13,7 +13,6 @@ export async function run(
   flags: { [name: string]: any },
   cwd: string
 ) {
-
   if (input[0] === "init") {
     await init(cwd);
     return;
@@ -43,6 +42,10 @@ export async function run(
     switch (input[0]) {
       case "add": {
         await add(cwd, open);
+        return;
+      }
+      case "version": {
+        await version(cwd);
         return;
       }
       default: {

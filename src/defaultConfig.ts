@@ -1,4 +1,4 @@
 export const defaultConfig = {
   baseBranch: "main",
-  updateInternalDependencies: "patch",
+  changelogPath: "./CHANGELOG.md",
 } as const;

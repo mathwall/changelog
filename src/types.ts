@@ -41,6 +41,12 @@ export type ComprehensiveRelease = {
 };
 
 export type ReleasePlan = {
+  newVersion: string;
   changesets: NewChangeset[];
   releases: ComprehensiveRelease[];
+};
+
+export declare type Config = {
+  changelogPath: string;
+  baseBranch: string;
 };
