@@ -60,5 +60,9 @@
     "meow": "^6.0.0",
     "outdent": "^0.8.0",
     "term-size": "^2.1.0"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "^18.13.0"
   }
 }
