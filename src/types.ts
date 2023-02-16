@@ -14,18 +14,8 @@ export type InternalRelease = {
 
 export type Release = { name: string; type: VersionType };
 
-export type SummaryType =
-  | "added"
-  | "removed"
-  | "changed"
-  | "fixed"
-  | "security"
-  | "deprecated";
-
-export type Summary = { type: SummaryType; detail: string };
-
 export declare type Changeset = {
-  summary: Summary;
+  summary: string;
   releases: Array<Release>;
 };
 export declare type NewChangeset = Changeset & {

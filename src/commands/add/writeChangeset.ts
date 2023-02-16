@@ -42,7 +42,7 @@ async function writeChangeset(
 ${releases.map((release) => `"${release.name}": ${release.type}`).join("\n")}
 ---
 
-"${summary.type}": ${summary.detail}
+${summary}
   `;
 
   await fs.outputFile(

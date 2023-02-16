@@ -75,7 +75,7 @@ const getReleaseLine = async (
     );
   }
 
-  const [firstLine, ...futureLines] = changeset.summary.detail
+  const [firstLine, ...futureLines] = changeset.summary
     .split("\n")
     .map((l) => l.trimEnd());
 
@@ -95,11 +95,10 @@ const getReleaseLine = async (
   })();
 
   const suffix = [
-    links.pull === null ? "" : ` ${links.pull}`,
+    links.pull === null ? "" : `${links.pull}`,
     links.user === null ? "" : ` Thanks ${links.user}!`,
   ].join("");
 
-  return `- ${firstLine}\n${futureLines.map((l) => `  ${l}`).join("\n")} ${
-    suffix ? `${suffix}` : ""
-  }`;
+  return `- ${firstLine}\n${futureLines.map((l) => `  ${l}`).join("\n")}
+  ${suffix ?? ""}`;
 };

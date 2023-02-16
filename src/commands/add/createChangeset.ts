@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 import * as cli from "../../utils/cli-utilities";
 import { error, log } from "../../utils/logger";
-import { Release, Changeset, SummaryType, VersionType } from "../../types";
+import { Release, Changeset, VersionType } from "../../types";
 
 async function getPackagesToRelease(
   packages: Array<string>
@@ -43,15 +43,6 @@ async function getReleaseType(): Promise<VersionType> {
     "patch",
     "minor",
     "major",
-  ]);
-}
-
-async function getChangeType(): Promise<SummaryType> {
-  return cli.askList(`What kind of change did you do ?`, [
-    "added",
-    "removed",
-    "changed",
-    "fixed",
   ]);
 }
 
@@ -97,11 +88,10 @@ export default async function createChangeset(
   for (const packageToRelease of packagesToRelease) {
     releases.push({ name: packageToRelease, type: releaseType });
   }
-  const changeType = await getChangeType();
-  const summaryDetail = await getReleaseSummary();
+  const summary = await getReleaseSummary();
 
   return {
-    summary: { type: changeType, detail: summaryDetail },
+    summary,
     releases,
   };
 }

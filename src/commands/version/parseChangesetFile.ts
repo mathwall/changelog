@@ -1,10 +1,10 @@
 import yaml from "js-yaml";
-import { Summary, Release, VersionType, SummaryType } from "../../types";
+import { Release, VersionType } from "../../types";
 
 const mdRegex = /\s*---([^]*?)\n\s*---(\s*(?:\n|$)[^]*)/;
 
 export default function parseChangesetFile(contents: string): {
-  summary: Summary;
+  summary: string;
   releases: Release[];
 } {
   const execResult = mdRegex.exec(contents);
@@ -17,10 +17,9 @@ export default function parseChangesetFile(contents: string): {
   const [, roughReleases, roughSummary] = execResult;
 
   try {
+    const summary = roughSummary.trim();
+
     const yamlReleases = yaml.load(roughReleases) as {
-      [key: string]: VersionType;
-    };
-    const yamlSummary = yaml.load(roughSummary) as {
       [key: string]: VersionType;
     };
 
@@ -30,11 +29,8 @@ export default function parseChangesetFile(contents: string): {
         name,
         type,
       }));
-    const summaryType =
-      yamlSummary && (Object.keys(yamlSummary)[0] as SummaryType);
-    const summary = { type: summaryType, detail: yamlSummary[summaryType] };
 
-    if (!releases || !summary) {
+    if (!releases) {
       throw new Error(`could not parse changeset - unknown error: ${contents}`);
     }
 
