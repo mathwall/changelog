@@ -7,7 +7,7 @@ import { run } from "./run";
 const { input, flags } = meow(
   `
   Usage
-    $ changeset [command]
+    $ simple-changeset [command]
   Commands
     init
     add [--empty] [--open]

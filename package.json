@@ -13,8 +13,7 @@
     "build": "preconstruct build",
     "start": "npm run build && node build/index.js",
     "debug": "ts-node src/index.ts",
-    "prepare": "npm run build",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",

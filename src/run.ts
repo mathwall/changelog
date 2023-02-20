@@ -21,7 +21,7 @@ export async function run(
   if (!fs.existsSync(path.resolve(cwd, ".changeset"))) {
     error("There is no .changeset folder. ");
     error(
-      "If this is the first time `changesets` have been used in this project, run `yarn changeset init` to get set up."
+      "If this is the first time `simple-changeset` have been used in this project, run `simple-changeset init` to get set up."
     );
     error(
       "If you expected there to be changesets, you should check git history for when the folder was removed to ensure you do not lose any configuration."
@@ -34,7 +34,7 @@ export async function run(
     await add(cwd, open);
   } else if (input[0] !== "pre" && input.length > 1) {
     error(
-      "Too many arguments passed to changesets - we only accept the command name as an argument"
+      "Too many arguments passed to simple-changeset - we only accept the command name as an argument"
     );
   } else {
     const { open }: CliOptions = flags;
