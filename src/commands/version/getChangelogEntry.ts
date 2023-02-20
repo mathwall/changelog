@@ -71,7 +71,7 @@ const getReleaseLine = async (
 ): Promise<string> => {
   if (!repo) {
     throw new Error(
-      'Please provide a repo to this changelog generator like this:\n"changelog": ["@changesets/changelog-github", { "repo": "org/repo" }]'
+      'Please provide a repo to this changelog generator like this:\n"repo": "org/repo"'
     );
   }
 
