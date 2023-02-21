@@ -17,7 +17,7 @@ export const getVersionMessage = (releasePlan: ReleasePlan): string => {
 
   return outdent`
     RELEASING: Releasing ${numPackagesReleased} package(s)
-
+    [automated:release]
     Releases:
     ${releasesLines}
 `;
