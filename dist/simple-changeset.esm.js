@@ -291,7 +291,7 @@ const getVersionMessage = releasePlan => {
   const releasesLines = publishableReleases.map(release => `  ${release.name}@${release.newVersion}`).join("\n");
   return outdent`
     RELEASING: Releasing ${numPackagesReleased} package(s)
-
+    [automated:release]
     Releases:
     ${releasesLines}
 `;
