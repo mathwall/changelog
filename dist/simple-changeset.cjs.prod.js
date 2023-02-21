@@ -814,7 +814,7 @@ async function version(cwd) {
   const changesets = await getChangesets(cwd);
   if (changesets.length === 0) {
     warn("No unreleased changesets found, exiting.");
-    return;
+    return process.exit(1);
   }
   const oldVersion = await extractOldVersion(cwd);
   const releasePlan = assembleReleasePlan(changesets, oldVersion);

@@ -1,1 +1,1 @@
-export default function version(cwd: string): Promise<void>;
+export default function version(cwd: string): Promise<undefined>;

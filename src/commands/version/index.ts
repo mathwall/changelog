@@ -12,7 +12,7 @@ export default async function version(cwd: string) {
   const changesets = await readChangesets(cwd);
   if (changesets.length === 0) {
     warn("No unreleased changesets found, exiting.");
-    return;
+    return process.exit(1);
   }
   const oldVersion = await extractOldVersion(cwd);
   const releasePlan = assembleReleasePlan(changesets, oldVersion);
