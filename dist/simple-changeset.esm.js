@@ -229,7 +229,7 @@ async function getPackagesToRelease(packages) {
   }
   return [packages[0]];
 }
-async function getReleaseType() {
+async function getReleaseType$1() {
   return askList(`What kind of release should it be ?`, ["patch", "minor", "major"]);
 }
 async function getReleaseSummary() {
@@ -255,7 +255,7 @@ async function getReleaseSummary() {
 async function createChangeset(packages) {
   const releases = [];
   const packagesToRelease = await getPackagesToRelease(packages);
-  const releaseType = await getReleaseType();
+  const releaseType = await getReleaseType$1();
   for (const packageToRelease of packagesToRelease) {
     releases.push({
       name: packageToRelease,
@@ -399,12 +399,10 @@ function incrementVersion(oldVersion, type) {
 }
 
 function assembleReleasePlan(changesets, oldVersion) {
-  var _releasesArray$;
   const releases = flattenReleases(changesets, oldVersion);
-  const releasesArray = [...releases.values()];
-  const releasesType = (_releasesArray$ = releasesArray[0]) === null || _releasesArray$ === void 0 ? void 0 : _releasesArray$.type;
+  const releasesType = getReleaseType(releases);
   const newVersion = incrementVersion(oldVersion, releasesType);
-  const releasesWithNewVersion = releasesArray.map(incompleteRelease => {
+  const releasesWithNewVersion = releases.map(incompleteRelease => {
     return {
       ...incompleteRelease,
       newVersion
@@ -415,6 +413,17 @@ function assembleReleasePlan(changesets, oldVersion) {
     changesets,
     releases: releasesWithNewVersion
   };
+}
+function getReleaseType(releases) {
+  const hasMajorChange = releases.find(release => release.type === "major");
+  if (hasMajorChange) {
+    return "major";
+  }
+  const hasMinorChange = releases.find(release => release.type === "minor");
+  if (hasMinorChange) {
+    return "minor";
+  }
+  return "patch";
 }
 function flattenReleases(changesets, oldVersion) {
   let releases = new Map();
@@ -443,7 +452,7 @@ function flattenReleases(changesets, oldVersion) {
       releases.set(name, release);
     });
   });
-  return releases;
+  return [...releases.values()];
 }
 
 const isChangesetWithCommit = changeset => {
@@ -612,14 +621,14 @@ async function getChangelogSections(changesetsWithCommits, repo) {
           package: release.name,
           subsections: [subsectionContent]
         });
-        break;
-      }
-      const subsection = section.subsections.find(s => s.type === release.type);
-      if (subsection) {
-        subsection.changelogEntry += `
-${releaseLine}`;
       } else {
-        section.subsections.push(subsectionContent);
+        const subsection = section.subsections.find(s => s.type === release.type);
+        if (subsection) {
+          subsection.changelogEntry += `
+  ${releaseLine}`;
+        } else {
+          section.subsections.push(subsectionContent);
+        }
       }
     }
   }

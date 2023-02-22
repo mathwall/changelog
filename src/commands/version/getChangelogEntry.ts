@@ -28,17 +28,16 @@ export async function getChangelogSections(
           package: release.name,
           subsections: [subsectionContent],
         });
-        break;
-      }
-
-      const subsection = section.subsections.find(
-        (s) => s.type === release.type
-      );
-      if (subsection) {
-        subsection.changelogEntry += `
-${releaseLine}`;
       } else {
-        section.subsections.push(subsectionContent);
+        const subsection = section.subsections.find(
+          (s) => s.type === release.type
+        );
+        if (subsection) {
+          subsection.changelogEntry += `
+  ${releaseLine}`;
+        } else {
+          section.subsections.push(subsectionContent);
+        }
       }
     }
   }
