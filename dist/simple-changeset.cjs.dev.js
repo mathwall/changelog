@@ -747,9 +747,15 @@ async function applyReleasePlan(releasePlan, cwd) {
   const changelogEntry = formatChangelogSections(changelogSections);
   const changelogPath = path__default["default"].resolve(cwd, parsedConfig.changelogPath);
   await updateChangelog(changelogPath, newVersion, changelogEntry);
+  const versionFilePath = path__default["default"].join(changesetBase, "version");
+  await updateVersionFile(versionFilePath, newVersion);
   const touchedFiles = await deleteChangesetFiles(releasePlan.changesets, cwd);
   touchedFiles.push(changelogPath);
+  touchedFiles.push(versionFilePath);
   return touchedFiles;
+}
+async function updateVersionFile(versionFilePath, newVersion) {
+  await fs__default["default"].writeFile(versionFilePath, newVersion);
 }
 async function deleteChangesetFiles(changesets, cwd) {
   let changesetFolder = path__default["default"].resolve(cwd, ".changeset");

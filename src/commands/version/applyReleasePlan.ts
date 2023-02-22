@@ -40,10 +40,18 @@ export default async function applyReleasePlan(
   const changelogPath = path.resolve(cwd, parsedConfig.changelogPath);
   await updateChangelog(changelogPath, newVersion, changelogEntry);
 
+  const versionFilePath = path.join(changesetBase, "version");
+  await updateVersionFile(versionFilePath, newVersion);
+
   const touchedFiles = await deleteChangesetFiles(releasePlan.changesets, cwd);
   touchedFiles.push(changelogPath);
+  touchedFiles.push(versionFilePath);
 
   return touchedFiles;
+}
+
+async function updateVersionFile(versionFilePath: string, newVersion: string) {
+  await fs.writeFile(versionFilePath, newVersion);
 }
 
 async function deleteChangesetFiles(
