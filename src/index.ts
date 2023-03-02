@@ -3,6 +3,10 @@ import { ExitError, InternalError } from "@changesets/errors";
 import { error } from "./utils/logger";
 import { run } from "./run";
 
+const importMeta = {
+  url: require('url').pathToFileURL(__filename).toString()
+} as const
+
 // TODO update the flags and documentation
 const { input, flags } = meow(
   `
@@ -14,6 +18,7 @@ const { input, flags } = meow(
     version [--ignore] [--snapshot <?name>] [--snapshot-prerelease-template <template>]
     `,
   {
+    importMeta: importMeta,
     flags: {
       sinceMaster: {
         type: "boolean",
