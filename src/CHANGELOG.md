@@ -1,3 +1,7 @@
+## [2.1.2]  2023-08-30
+
+Update release commit name.
+It now starts with [automated:release]
 
 ## [2.1.0]  2023-02-22
 

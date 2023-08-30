@@ -15,9 +15,8 @@ export const getVersionMessage = (releasePlan: ReleasePlan): string => {
     .map((release) => `  ${release.name}@${release.newVersion}`)
     .join("\n");
 
-  return outdent`
+  return outdent`[automated:release]
     RELEASING: Releasing ${numPackagesReleased} package(s)
-    [automated:release]
     Releases:
     ${releasesLines}
 `;

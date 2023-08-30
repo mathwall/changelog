@@ -1,6 +1,6 @@
 {
   "name": "simple-changeset",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Automatically create a changelog from changeset files in a python poetry monorepo",
   "main": "dist/simple-changeset.cjs.js",
   "module": "dist/simple-changeset.esm.js",
